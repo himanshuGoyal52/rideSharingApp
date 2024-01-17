@@ -4,20 +4,20 @@ const baseurl=`${process.env.REACT_APP_BASE_URL}`
 export const handleRegister=(state)=>async(dispatch)=>{
     console.log(baseurl,"is baseurl")
     dispatch({type:PASSENGER_REQUEST})
-  let res= await axios.post(`${baseurl}passenger/register`,state)
+  let res= await axios.post(`${baseurl}/api/auth/signup`,state)
   console.log(res.data.passenger)
      return res
 }
 export const handleLogin=({email,password})=>async(dispatch)=>{
    dispatch({type:PASSENGER_REQUEST})
-    let res=await axios.post(`${baseurl}passenger/login`,{email,password})
+    let res=await axios.post(`${baseurl}/api/auth/signin`,{email,password})
     return res
 }
 export const handleRequest=(location)=>async(dispatch)=>{
  dispatch({type:PASSENGER_REQUEST})
  console.log(location,'inside actions function')
 //  let res=await axios.patch(`${baseurl}passenger/update/request/${localStorage.getItem("passengerId")}`,location)
-  let res=await fetch(`${baseurl}passenger/update/request/${localStorage.getItem("passengerId")}`,{
+  let res=await fetch(`${baseurl}api/update/request/${localStorage.getItem("passengerId")}`,{
     method:"PATCH",
     headers:{
       "content-Type":"application/json",
@@ -30,7 +30,7 @@ export const handleRequest=(location)=>async(dispatch)=>{
 }
 export const getNearByDrivers=()=>async(dispatch)=>{
 dispatch({type:PASSENGER_REQUEST})
- let res=await fetch(`${baseurl}passenger/${localStorage.getItem("passengerId")}`,{
+ let res=await fetch(`${baseurl}api/auth/${localStorage.getItem("passengerId")}`,{
   method:"GET",
   headers:{
     "Authorization":localStorage.getItem("token")
@@ -48,10 +48,11 @@ dispatch({type:PASSENGER_REQUEST})
 // let res=await axios.post(`${baseurl}driver/login`,data)
 // return res
 // }
+
 export const defaultRequest=()=>async(dispatch)=>{
   console.log('entered default Request')
 dispatch({type:PASSENGER_REQUEST})
-let res=await fetch(`${baseurl}passenger/default/${localStorage.getItem("passengerId")}`,{
+let res=await fetch(`${baseurl}api/default/${localStorage.getItem("passengerId")}`,{
   method:"PATCH",
   headers:{
     'content-Type':"application/json",
@@ -63,9 +64,10 @@ let data=await res.json()
 console.log(data,'after defaulting')
 return data
 }
+
 export const passengerLogout=()=>async(dispatch)=>{
 dispatch({type:PASSENGER_REQUEST})
-let res=await fetch(`${baseurl}passenger/logout`,{
+let res=await fetch(`${baseurl}api/auth/logout`,{
   method:"GET",
   headers:{
     "Authorization":localStorage.getItem("token")
